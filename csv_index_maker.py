@@ -3,16 +3,18 @@
 
 import csv
 import os
+import sys
 
-dataPath = 'pdf work'
-
+dataPath = sys.argv[2]
 
 csvData = []
 txtData = {}
 ignoreFiles = ['.DS_Store']
 
 # main methods
-with open('order_no_mit_gid_result.csv', 'rb') as csvfile:
+srcName = sys.argv[1].replace('.csv', '') + "_result.csv"
+print "Reading from: %s" % srcName
+with open(srcName, 'rb') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='|')
 
     for row in reader:
@@ -21,7 +23,7 @@ with open('order_no_mit_gid_result.csv', 'rb') as csvfile:
 print "Found %s lines in csv" % len(csvData)
 
 files =[]
-for (dirpath, dirnames, filenames) in os.walk('pdf work'):
+for (dirpath, dirnames, filenames) in os.walk(dataPath):
     files.extend(filenames)
 
 for fileName in files:
@@ -33,7 +35,9 @@ for fileName in files:
 
 print "Found %s pages of text" % len(txtData)
 
-with open('order_no_mit_gid_result_with_index.csv', 'wb') as f:
+dstName = sys.argv[1].replace('.csv', '') + "_result_with_index.csv"
+print "Writing to: %s" % dstName
+with open(dstName, 'wb') as f:
     writer = csv.writer(f)
     count = 0
     for line in csvData:

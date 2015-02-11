@@ -12,10 +12,12 @@
 preStringList = ["S", "B"]
 
 import csv
+import sys
 goodList = []
 keyList = []
 dataDict = {}
 finalDict = {}
+
 
 # helper
 def f7(seq):
@@ -24,7 +26,8 @@ def f7(seq):
     return [ x for x in seq if not (x in seen or seen_add(x))]
 
 # main methods
-with open('order_no_mit_gid.csv', 'rb') as csvfile:
+print "Reading from: %s" % sys.argv[1]
+with open(sys.argv[1], 'rb') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='|')
 
     count = 0
@@ -57,7 +60,9 @@ with open('order_no_mit_gid.csv', 'rb') as csvfile:
 
     print "Lines: %s, good count: %s (%s)" % (count, goodCount, firstGoodCount)
 
-with open('order_no_mit_gid_result.csv', 'wb') as f:
+resName = sys.argv[1].replace('.csv', '') + "_result.csv"
+print "Writing to: %s" % resName
+with open(resName, 'wb') as f:
     identCount = 0
     guessedCount = 0
     missingCount = 0
